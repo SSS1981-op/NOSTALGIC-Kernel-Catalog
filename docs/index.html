@@ -150,7 +150,7 @@
         <div>
           <div class="eyebrow">OnePlus kernel packages</div>
           <h1 id="page-title">Pick the kernel built for your device.</h1>
-          <p class="lede">Published KernelSU Next 33276 + SuSFS 2.2 + NoMount 2.0 packages. Select an asset that matches your exact OnePlus model, OxygenOS generation, and kernel version.</p>
+          <p class="lede">KernelSU Next 33301 + SuSFS 2.3.0 + NoMount Inline 2.0.0. Select a package matching your exact OnePlus model, OxygenOS generation, and kernel version. Earlier releases remain available below.</p>
           <div class="stats">
             <span class="stat" id="package-count">Loading packages</span>
             <span class="stat">NoMount 2.0 integrated</span>
@@ -228,25 +228,26 @@
       const rootLabels = { KSUN: "KernelSU Next" };
       const companionAssets = [
         {
-          match: /^NoMount.*v2\.0.*\.zip$/i,
+          match: /^NoMount-v2\.0\.0-release\.zip$/i,
           title: "NoMount metamodule",
           description: "NoMount 2.0 metamodule for the built-in NoMount API."
         },
         {
-          match: /^KernelSU_Next_(?!.*spoofed).*\.apk$/i,
+          match: /^KernelSU_Next_v3\.4\.0-7-gd3c68954_33301-release\.apk$/i,
           title: "KernelSU Next manager",
           description: "Normal KernelSU Next manager APK for this release."
         },
         {
-          match: /^KernelSU_Next_.*spoofed.*\.apk$/i,
+          match: /^KernelSU_Next_v3\.4\.0-7-gd3c68954-spoofed_33301-release\.apk$/i,
           title: "KernelSU Next spoofed manager",
           description: "Spoofed KernelSU Next manager APK for apps that require it."
         }
       ];
 
       function parseKernelAsset(asset) {
-        const match = asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/);
-        return match && { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", susfs: match[5] };
+        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android14-6\.1\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
+          || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/);
+        return match && { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", ksu: match[4], susfs: match[5] };
       }
       function parseManagerAsset(asset) {
         return /^KernelSU_Next_.*\.apk$/i.test(asset.name) && { ...asset, type: "manager", root: "KSUN" };
@@ -286,7 +287,7 @@
           section.className = "group";
           const managerCount = `${managers.length} manager${managers.length === 1 ? "" : "s"}`;
           const kernelCount = `${kernels.length} kernel${kernels.length === 1 ? "" : "s"}`;
-          section.innerHTML = `<div class="group-title"><span>${rootLabels[root]} 33276 · ${release.name}</span><span>${managerCount} · ${kernelCount}</span></div>`;
+          section.innerHTML = `<div class="group-title"><span>${rootLabels[root]} ${[...new Set(kernels.map(item => item.ksu))].join(" / ")} · ${release.name}</span><span>${managerCount} · ${kernelCount}</span></div>`;
           const grid = document.createElement("div");
           grid.className = "assets";
           managers.sort((a, b) => a.name.localeCompare(b.name)).forEach(asset => {
@@ -303,7 +304,7 @@
             link.className = "asset";
             link.href = asset.browser_download_url;
             link.dataset.download = "";
-            link.innerHTML = `<b>${asset.model}</b><span>${asset.oos.replace("OOS", "OxygenOS ")} · ${asset.kernel}</span><span>${rootLabels[asset.root]} + SUSFS ${asset.susfs}</span><span class="download">Download ZIP &rarr;</span>`;
+            link.innerHTML = `<b>${asset.model}</b><span>${asset.oos.replace("OOS", "OxygenOS ")} · ${asset.kernel}</span><span>${rootLabels[asset.root]} ${asset.ksu} + SUSFS ${asset.susfs}</span><span class="download">Download ZIP &rarr;</span>`;
             grid.append(link);
           });
           section.append(grid);

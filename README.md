@@ -4,7 +4,7 @@ The public download catalog for the NOSTALGIC OnePlus kernel releases.
 
 It contains no private build workflows, device-source checkouts, credentials, or CI configuration. The catalog reads published release assets and provides direct downloads for:
 
-- KernelSU Next 33276 / SuSFS 2.2 / NoMount Inline 2.0 kernel packages
+- KernelSU Next 33301 / SuSFS 2.3.0 / NoMount Inline 2.0.0 kernel packages, with earlier releases retained
 - NoMount 2.0 companion package
 - KernelSU Next normal and spoofed manager APKs
 
@@ -19,3 +19,5 @@ Only release assets whose names match the published NOSTALGIC naming convention 
 ## Important
 
 Use only the package matching your exact OnePlus device, OxygenOS generation, and kernel version. Keep a known-working boot image available before flashing.
+
+The 51-target kernel 6.1 release is build-tested. The user reported boot testing of the OP13R pilot stack; other devices are not represented as boot-tested. The remaining 105 matrix targets are not included in this release.
