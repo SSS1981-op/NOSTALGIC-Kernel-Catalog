@@ -272,6 +272,11 @@
       const rootLabels = { KSUN: "KernelSU Next", ReSukiSU: "ReSukiSU" };
       const companionAssets = [
         {
+          match: /^NoMount-v1\.1\.1-dev-1dacddf-KSUN\.zip$/i,
+          title: "NoMount module for KernelSU Next",
+          description: "NoMount module published with the KernelSU Next 33214 release."
+        },
+        {
           match: /^NoMount-v1\.1\.1-dev-1dacddf-ReSukiSU\.zip$/i,
           title: "NoMount module for ReSukiSU",
           description: "NoMount module published with the ReSukiSU 35055 release."
@@ -290,7 +295,8 @@
 
       function parseKernelAsset(asset) {
         const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
-          || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/);
+          || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/)
+          || asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33214)_SuSFS_(v2\.2\.0)\.zip$/);
         if (match) return { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", ksu: match[4], susfs: match[5] };
         const resukisu = asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_ReSukiSU_(35055)_SuSFS_(v2\.2\.0)\.zip$/);
         return resukisu && { ...asset, type: "kernel", model: resukisu[1], oos: resukisu[2], kernel: resukisu[3], root: "ReSukiSU", ksu: resukisu[4], susfs: resukisu[5] };
