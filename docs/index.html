@@ -245,7 +245,7 @@
       ];
 
       function parseKernelAsset(asset) {
-        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android14-6\.1\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
+        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
           || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/);
         return match && { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", ksu: match[4], susfs: match[5] };
       }

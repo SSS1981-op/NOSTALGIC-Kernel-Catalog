@@ -20,4 +20,4 @@ Only release assets whose names match the published NOSTALGIC naming convention 
 
 Use only the package matching your exact OnePlus device, OxygenOS generation, and kernel version. Keep a known-working boot image available before flashing.
 
-The 51-target kernel 6.1 release is build-tested. The user reported boot testing of the OP13R pilot stack; other devices are not represented as boot-tested. The remaining 105 matrix targets are not included in this release.
+The published catalog includes 51 kernel 6.1 targets and 15 kernel 6.12/6.6 targets. All 66 packages are build-tested and checksum-verified. The user reported boot testing of the OP13R pilot stack; other devices are not represented as boot-tested. The remaining 90 matrix targets are not yet included.
