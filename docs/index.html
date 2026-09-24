@@ -171,7 +171,7 @@
         <div>
           <div class="eyebrow">OnePlus kernel packages</div>
           <h1 id="page-title">Pick the kernel built for your device.</h1>
-          <p class="lede">Verified KernelSU Next and ReSukiSU packages from RealS3S Kernel Lab. Select a package matching your exact OnePlus model, OxygenOS generation, kernel version, and root implementation.</p>
+          <p class="lede" id="release-summary">Verified KernelSU Next and ReSukiSU packages from RealS3S Kernel Lab. Select a package matching your exact OnePlus model, OxygenOS generation, kernel version, and root implementation.</p>
           <div class="stats">
             <span class="stat" id="package-count">Loading packages</span>
             <span class="stat">Published release assets</span>
@@ -196,7 +196,7 @@
 
       <div class="release-status" id="release-status" data-state="ready" role="status" aria-live="polite">
         <span class="status-light" aria-hidden="true"></span>
-        <span>All downloads ready<br><small>188 kernel packages verified across the catalog</small></span>
+        <span id="release-status-copy">All downloads ready<br><small>Verified packages are loading</small></span>
       </div>
 
       <div id="oneplus-content">
@@ -249,6 +249,9 @@
       const channelUrl = document.querySelector(".channel-spotlight")?.href;
       const downloadReminder = document.querySelector("#download-reminder");
       const continueDownload = document.querySelector("#continue-download");
+      const requestedRelease = new URLSearchParams(location.search).get("release");
+      const releaseStatusCopy = document.querySelector("#release-status-copy");
+      const releaseSummary = document.querySelector("#release-summary");
       let catalogAssets = [];
       let filter = "all";
       let rootFilter = "all";
@@ -359,7 +362,11 @@
       fetch(`https://api.github.com/repos/${repository}/releases?per_page=100`)
         .then(response => response.ok ? response.json() : Promise.reject(new Error("Release API unavailable")))
         .then(releases => {
-          const publishedReleases = releases.filter(item => !item.draft && !item.prerelease);
+          const allPublishedReleases = releases.filter(item => !item.draft && !item.prerelease);
+          const publishedReleases = requestedRelease
+            ? allPublishedReleases.filter(item => item.tag_name === requestedRelease)
+            : allPublishedReleases;
+          if (requestedRelease && publishedReleases.length !== 1) throw new Error("Requested release is unavailable");
           catalogAssets = publishedReleases.flatMap(release =>
             release.assets.map((asset, order) => {
               const parsed = parseCatalogAsset(asset);
@@ -384,6 +391,16 @@
           const managers = catalogAssets.filter(asset => asset.type === "manager");
           const releaseCount = new Set(kernels.map(item => item.release.id)).size;
           count.textContent = `${kernels.length} kernels and ${managers.length} managers from ${releaseCount} published release${releaseCount === 1 ? "" : "s"}`;
+          if (requestedRelease) {
+            releaseStatusCopy.innerHTML = `All downloads ready<br><small>${kernels.length} kernel packages verified for this release</small>`;
+            releaseSummary.textContent = `${rootLabels[kernels[0].root]} ${kernels[0].ksu} + SUSFS ${kernels[0].susfs} packages from ${publishedReleases[0].name}. Select the package matching your exact model, OxygenOS generation, and kernel version.`;
+            const roots = new Set(kernels.map(item => item.root));
+            document.querySelectorAll("[data-root]").forEach(button => {
+              button.hidden = button.dataset.root !== "all" && !roots.has(button.dataset.root);
+            });
+          } else {
+            releaseStatusCopy.innerHTML = `All downloads ready<br><small>${kernels.length} kernel packages verified across the catalog</small>`;
+          }
           render();
         })
         .catch(error => {
