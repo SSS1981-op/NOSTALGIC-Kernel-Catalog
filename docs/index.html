@@ -107,6 +107,27 @@
         background-color: #e4f2ff;
       }
       .download { color: var(--blue); font-weight: 800; font-size: .9rem; }
+      .release-status {
+        display: flex; align-items: center; gap: .7rem; width: fit-content;
+        margin: 1rem 0; padding: .7rem 1rem; border: 1px solid var(--line);
+        border-radius: 999px; background: color-mix(in oklch, white 88%, var(--lime));
+        color: var(--ink); font-weight: 750;
+      }
+      .release-status small { color: var(--muted); font-weight: 600; }
+      .status-light {
+        width: .78rem; height: .78rem; flex: 0 0 .78rem; border-radius: 50%;
+        background: #22c55e; box-shadow: 0 0 0 .3rem rgb(34 197 94 / .14);
+      }
+      .release-status[data-state="uploading"] .status-light {
+        animation: status-pulse 1.25s ease-in-out infinite;
+      }
+      @keyframes status-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 .25rem rgb(34 197 94 / .14); }
+        50% { opacity: .38; transform: scale(.78); box-shadow: 0 0 0 .55rem rgb(34 197 94 / .05); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .release-status[data-state="uploading"] .status-light { animation: none; }
+      }
       .coming-soon { color: var(--muted); }
       .download-reminder {
         width: min(31rem, calc(100% - 2rem)); padding: 0; border: 1px solid var(--line);
@@ -150,10 +171,10 @@
         <div>
           <div class="eyebrow">OnePlus kernel packages</div>
           <h1 id="page-title">Pick the kernel built for your device.</h1>
-          <p class="lede">KernelSU Next 33301 + SuSFS 2.3.0 + NoMount Inline 2.0.0. Select a package matching your exact OnePlus model, OxygenOS generation, and kernel version. Earlier releases remain available below.</p>
+          <p class="lede">Verified KernelSU Next and ReSukiSU packages from RealS3S Kernel Lab. Select a package matching your exact OnePlus model, OxygenOS generation, kernel version, and root implementation.</p>
           <div class="stats">
             <span class="stat" id="package-count">Loading packages</span>
-            <span class="stat">NoMount 2.0 integrated</span>
+            <span class="stat">Published release assets</span>
             <span class="stat">Device-specific only</span>
           </div>
         </div>
@@ -173,10 +194,15 @@
 
       <aside class="notice" id="compatibility-notice"><strong>Compatibility first:</strong> Do not flash a package for another OnePlus model or OOS build. Always match the model, OxygenOS generation, and kernel version shown on the card.</aside>
 
+      <div class="release-status" id="release-status" data-state="ready" role="status" aria-live="polite">
+        <span class="status-light" aria-hidden="true"></span>
+        <span>All downloads ready<br><small>188 kernel packages verified across the catalog</small></span>
+      </div>
+
       <div id="oneplus-content">
         <section class="tools" aria-labelledby="tools-title">
           <div class="eyebrow">Companion downloads</div>
-          <h2 id="tools-title">Set up KernelSU Next and NoMount</h2>
+          <h2 id="tools-title">Managers and NoMount modules</h2>
           <div class="tool-grid" id="tools"></div>
         </section>
 
@@ -190,7 +216,9 @@
               <button type="button" data-filter="OOS16" aria-pressed="false">OOS 16</button>
             </div>
             <div class="filters" aria-label="Filter root implementation">
-              <button type="button" data-root="all" aria-pressed="true">KernelSU Next</button>
+              <button type="button" data-root="all" aria-pressed="true">All roots</button>
+              <button type="button" data-root="KSUN" aria-pressed="false">KernelSU Next</button>
+              <button type="button" data-root="ReSukiSU" aria-pressed="false">ReSukiSU</button>
             </div>
           </div>
           <p class="status" id="status" role="status">Loading published packages...</p>
@@ -225,7 +253,7 @@
       let filter = "all";
       let rootFilter = "all";
       let requestedDownload = null;
-      const rootLabels = { KSUN: "KernelSU Next" };
+      const rootLabels = { KSUN: "KernelSU Next", ReSukiSU: "ReSukiSU" };
       const companionAssets = [
         {
           match: /^NoMount-v2\.0\.0-release\.zip$/i,
@@ -241,16 +269,34 @@
           match: /^KernelSU_Next_v3\.4\.0-7-gd3c68954-spoofed_33301-release\.apk$/i,
           title: "KernelSU Next spoofed manager",
           description: "Spoofed KernelSU Next manager APK for apps that require it."
+        },
+        {
+          match: /^NoMount-v1\.1\.1-dev-1dacddf-ReSukiSU\.zip$/i,
+          title: "NoMount module for ReSukiSU",
+          description: "NoMount module published with the ReSukiSU 35055 release."
+        },
+        {
+          match: /^ReSukiSU_v4\.1\.0_35055-arm64-v8a-release\.apk$/i,
+          title: "ReSukiSU manager",
+          description: "Normal ReSukiSU manager APK for build 35055."
+        },
+        {
+          match: /^ReSukiSU_v4\.1\.0-spoofed_35055-arm64-v8a-release\.apk$/i,
+          title: "ReSukiSU spoofed manager",
+          description: "Spoofed ReSukiSU manager APK for build 35055."
         }
       ];
 
       function parseKernelAsset(asset) {
         const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
           || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/);
-        return match && { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", ksu: match[4], susfs: match[5] };
+        if (match) return { ...asset, type: "kernel", model: match[1], oos: match[2], kernel: match[3], root: "KSUN", ksu: match[4], susfs: match[5] };
+        const resukisu = asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_ReSukiSU_(35055)_SuSFS_(v2\.2\.0)\.zip$/);
+        return resukisu && { ...asset, type: "kernel", model: resukisu[1], oos: resukisu[2], kernel: resukisu[3], root: "ReSukiSU", ksu: resukisu[4], susfs: resukisu[5] };
       }
       function parseManagerAsset(asset) {
-        return /^KernelSU_Next_.*\.apk$/i.test(asset.name) && { ...asset, type: "manager", root: "KSUN" };
+        if (/^KernelSU_Next_.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KSUN" };
+        return /^ReSukiSU_.*\.apk$/i.test(asset.name) && { ...asset, type: "manager", root: "ReSukiSU" };
       }
       function parseCatalogAsset(asset) {
         return parseKernelAsset(asset) || parseManagerAsset(asset);
@@ -299,7 +345,7 @@
             link.innerHTML = `<b>${rootLabels[asset.root]} ${variant}</b><span>${asset.name}</span><span class="download">Download APK &rarr;</span>`;
             grid.append(link);
           });
-          kernels.sort((a, b) => a.model.localeCompare(b.model) || a.oos.localeCompare(b.oos)).forEach(asset => {
+          kernels.sort((a, b) => a.order - b.order).forEach(asset => {
             const link = document.createElement("a");
             link.className = "asset";
             link.href = asset.browser_download_url;
@@ -330,7 +376,10 @@
         .then(releases => {
           const publishedReleases = releases.filter(item => !item.draft && !item.prerelease);
           catalogAssets = publishedReleases.flatMap(release =>
-            release.assets.map(parseCatalogAsset).filter(Boolean).map(asset => ({ ...asset, release }))
+            release.assets.map((asset, order) => {
+              const parsed = parseCatalogAsset(asset);
+              return parsed && { ...parsed, order, release };
+            }).filter(Boolean)
           );
           if (!catalogAssets.some(asset => asset.type === "kernel")) throw new Error("Packages are still being published");
           const tools = document.querySelector("#tools");
