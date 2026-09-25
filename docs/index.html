@@ -321,6 +321,16 @@
           match: /^KernelSU_Next_v3\.3\.0-spoofed_33214-release\.apk$/i,
           title: "KernelSU Next spoofed manager",
           description: "Spoofed KernelSU Next manager APK for build 33214."
+        },
+        {
+          match: /^KernelSU_Next_(?!.*spoofed).*33301.*-release\.apk$/i,
+          title: "KernelSU Next 33301 manager",
+          description: "Normal KernelSU Next manager APK for build 33301."
+        },
+        {
+          match: /^KernelSU_Next_.*spoofed.*33301.*-release\.apk$/i,
+          title: "KernelSU Next 33301 spoofed manager",
+          description: "Spoofed KernelSU Next manager APK for build 33301."
         }
       ];
 
@@ -430,15 +440,16 @@
           if (!catalogAssets.some(asset => asset.type === "kernel")) throw new Error("Packages are still being published");
           const tools = document.querySelector("#tools");
           const releaseAssets = publishedReleases.flatMap(release => release.assets.map(asset => ({ ...asset, release })));
-          tools.replaceChildren(...companionAssets.map(tool => {
-            const asset = releaseAssets.find(item => tool.match.test(item.name));
-            const card = document.createElement(asset ? "a" : "div");
+          const availableCompanions = companionAssets.map(tool => ({
+            tool,
+            asset: releaseAssets.find(item => tool.match.test(item.name))
+          })).filter(item => item.asset);
+          tools.replaceChildren(...availableCompanions.map(({ tool, asset }) => {
+            const card = document.createElement("a");
             card.className = "tool-card highlighted-download";
-            if (asset) {
-              card.href = asset.browser_download_url;
-              card.dataset.download = "";
-            }
-            card.innerHTML = `<b>${tool.title}</b><small>${tool.description}</small><span class="download">${asset ? "Download &rarr;" : "Publishing soon"}</span>`;
+            card.href = asset.browser_download_url;
+            card.dataset.download = "";
+            card.innerHTML = `<b>${tool.title}</b><small>${tool.description}</small><span class="download">Download &rarr;</span>`;
             return card;
           }));
           const kernels = catalogAssets.filter(asset => asset.type === "kernel");

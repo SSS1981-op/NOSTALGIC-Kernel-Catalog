@@ -9,7 +9,7 @@ It contains no private build workflows, device-source checkouts, credentials, or
 - KernelSU 32525 / SuSFS 2.2.0 / NoMount 1.1.1 kernel packages migrated from the original v2.2.0-r2 release
 - ReSukiSU 35055 / SuSFS 2.2.0 kernel packages migrated from the original 2026-08-09 release
 - NoMount 1.1.1 companion packages and the current NoMount 2.0.0 module
-- KernelSU, KernelSU Next, and ReSukiSU manager APKs, including the available spoofed variants
+- KernelSU, KernelSU Next, and ReSukiSU manager APKs, including both normal and spoofed KernelSU Next 33301 managers
 
 ## Download site
 
