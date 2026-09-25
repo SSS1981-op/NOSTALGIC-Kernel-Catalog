@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/sitemap.xml

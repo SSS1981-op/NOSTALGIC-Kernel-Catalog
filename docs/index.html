@@ -5,22 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Browse compatible OnePlus kernel packages from RealS3S Kernel Lab."
+      content="Download verified OnePlus custom kernels from RealS3S Kernel Lab, including KernelSU Next, KernelSU, ReSukiSU, SUSFS and NoMount packages for OxygenOS 14, 15 and 16."
     />
-    <title>RealS3S Kernel Lab | Device Kernel Packages</title>
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/" />
+    <title>RealS3S Kernel Lab | OnePlus Custom Kernels, KernelSU &amp; SUSFS</title>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RealS3S Kernel Lab" />
-    <meta property="og:title" content="RealS3S Kernel Lab | Device Kernel Packages" />
-    <meta property="og:description" content="Verified OnePlus kernel packages from RealS3S Kernel Lab." />
+    <meta property="og:title" content="RealS3S Kernel Lab | OnePlus Custom Kernel Downloads" />
+    <meta property="og:description" content="Verified KernelSU Next, KernelSU, ReSukiSU, SUSFS and NoMount packages for supported OnePlus devices." />
     <meta property="og:url" content="https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/" />
     <meta property="og:image" content="https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/assets/nostalgic-telegram-card-4k-v1.png" />
     <meta property="og:image:width" content="3840" />
     <meta property="og:image:height" content="2160" />
     <meta property="og:image:alt" content="NOSTALGIC OnePlus Kernel Lab branding" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="RealS3S Kernel Lab | Device Kernel Packages" />
-    <meta name="twitter:description" content="Verified OnePlus kernel packages from RealS3S Kernel Lab." />
+    <meta name="twitter:title" content="RealS3S Kernel Lab | OnePlus Custom Kernel Downloads" />
+    <meta name="twitter:description" content="Verified KernelSU Next, KernelSU, ReSukiSU, SUSFS and NoMount packages for supported OnePlus devices." />
     <meta name="twitter:image" content="https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/assets/nostalgic-telegram-card-4k-v1.png" />
+    <meta name="theme-color" content="#2463b3" />
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/#organization","name":"RealS3S Kernel Lab","url":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/","logo":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/assets/reals3s-kernel-lab-logo.svg","sameAs":["https://t.me/RealS3SKernelLab","https://github.com/SSS1981-op/NOSTALGIC-Kernel-Catalog"]},{"@type":"WebSite","@id":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/#website","url":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/","name":"RealS3S Kernel Lab – NOSTALGIC Kernel Catalog","description":"Verified OnePlus custom kernel downloads for OxygenOS, KernelSU Next, KernelSU, ReSukiSU, SUSFS and NoMount.","publisher":{"@id":"https://sss1981-op.github.io/NOSTALGIC-Kernel-Catalog/#organization"},"inLanguage":"en"}]}
+    </script>
     <style>
       :root {
         --ink: oklch(0.18 0.025 264);
@@ -95,6 +101,12 @@
       .stats { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.8rem; }
       .stat { padding: .7rem .9rem; border: 1px solid var(--line); border-radius: 99rem; background: oklch(1 0 0 / .7); font-weight: 700; font-size: .9rem; }
       .notice { margin: 2rem 0; padding: 1rem 1.2rem; border-left: .35rem solid var(--blue); border-radius: .4rem; background: oklch(0.93 0.045 230); color: oklch(0.31 0.06 250); }
+      .channel-promo { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1.5rem; margin: 2rem 0; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(135deg, oklch(0.97 0.025 220), oklch(0.95 0.045 145)); }
+      .channel-promo h2 { margin: .25rem 0 .65rem; font-size: clamp(1.65rem, 3vw, 2.35rem); }
+      .channel-promo p { max-width: 68ch; margin: 0; color: var(--muted); line-height: 1.6; }
+      .channel-button { display: inline-flex; align-items: center; justify-content: center; min-height: 3rem; padding: .75rem 1.15rem; border-radius: 999px; color: white; background: var(--blue); font-weight: 800; text-decoration: none; white-space: nowrap; }
+      .channel-button:hover, .channel-button:focus-visible { transform: translateY(-2px); outline: 3px solid oklch(0.72 0.13 210 / .4); }
+      .search-copy { margin: 0 0 2rem; color: var(--muted); line-height: 1.65; }
       .tools { margin: 2rem 0 3.5rem; }
       .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1rem; margin-top: 1rem; }
       .tool-card { display: grid; gap: .45rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: transform .18s ease, border-color .18s ease; }
@@ -167,6 +179,8 @@
         .channel-spotlight { top: auto; right: 0; bottom: 0; }
         .hero-cube { display: none; }
         .catalog-head { align-items: start; flex-direction: column; }
+        .channel-promo { grid-template-columns: 1fr; }
+        .channel-button { width: 100%; }
         .tool-grid { grid-template-columns: 1fr; }
       }
     </style>
@@ -207,6 +221,13 @@
 
       <aside class="notice" id="compatibility-notice"><strong>Compatibility first:</strong> Do not flash a package for another OnePlus model or OOS build. Always match the model, OxygenOS generation, and kernel version shown on the card.</aside>
 
+      <section class="channel-promo" aria-labelledby="telegram-title">
+        <div><div class="eyebrow">Official Telegram channel</div><h2 id="telegram-title">Join RealS3S Kernel Lab</h2><p>Follow <strong>RealS3S Kernel Lab</strong> on Telegram for NOSTALGIC kernel release announcements, supported-device updates, download status and community support.</p></div>
+        <a class="channel-button" href="https://t.me/RealS3SKernelLab" target="_blank" rel="noopener noreferrer" aria-label="Join RealS3S Kernel Lab on Telegram">Join on Telegram</a>
+      </section>
+
+      <p class="search-copy">The NOSTALGIC Kernel Catalog provides verified OnePlus custom kernel downloads for OxygenOS 14, OxygenOS 15 and OxygenOS 16, with KernelSU Next, KernelSU, ReSukiSU, SUSFS and NoMount support where listed. Every package is device-specific; match the exact model, Android version and kernel version before downloading.</p>
+
       <div class="release-status" id="release-status" data-state="ready" role="status" aria-live="polite">
         <span class="status-light" aria-hidden="true"></span>
         <span id="release-status-copy">All downloads ready<br><small>Verified packages are loading</small></span>
@@ -239,7 +260,7 @@
         </section>
       </div>
     </main>
-    <footer><div class="wrap">Built from the published NoMount release. Kernel modifications carry risk; keep a known-good boot image and recovery path before flashing.</div></footer>
+    <footer><div class="wrap"><strong>RealS3S Kernel Lab</strong> publishes the NOSTALGIC OnePlus custom kernel catalog. Follow <a href="https://t.me/RealS3SKernelLab" target="_blank" rel="noopener noreferrer">RealS3S Kernel Lab on Telegram</a> for releases and support. Kernel modifications carry risk; keep a known-good boot image and recovery path before flashing.</div></footer>
 
     <dialog class="download-reminder" id="download-reminder" aria-labelledby="download-reminder-title" aria-describedby="download-reminder-copy">
       <form method="dialog">
