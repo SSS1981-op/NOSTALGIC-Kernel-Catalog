@@ -264,6 +264,7 @@
       const continueDownload = document.querySelector("#continue-download");
       const requestedRelease = new URLSearchParams(location.search).get("release");
       const releaseStatusCopy = document.querySelector("#release-status-copy");
+      const releaseStatus = document.querySelector("#release-status");
       const releaseSummary = document.querySelector("#release-summary");
       let catalogAssets = [];
       let filter = "all";
@@ -275,6 +276,12 @@
         "nostalgic-ksun33214-susfs220-nomount-v220-r1",
         "nostalgic-ksu32525-susfs220-nomount-v220-r2",
         "nostalgic-ksun33301-susfs230-inline200-93"
+      ]);
+      const releaseTargets = new Map([
+        ["nostalgic-resukisu35055-susfs220-nomount111-20260809", 122],
+        ["nostalgic-ksun33214-susfs220-nomount-v220-r1", 156],
+        ["nostalgic-ksu32525-susfs220-nomount-v220-r2", 156],
+        ["nostalgic-ksun33301-susfs230-inline200-93", 156]
       ]);
       const companionAssets = [
         {
@@ -455,16 +462,23 @@
           const kernels = catalogAssets.filter(asset => asset.type === "kernel");
           const managers = catalogAssets.filter(asset => asset.type === "manager");
           const releaseCount = new Set(kernels.map(item => item.release.id)).size;
-          count.textContent = `${kernels.length} kernels and ${managers.length} managers from ${releaseCount} published release${releaseCount === 1 ? "" : "s"}`;
           if (requestedRelease) {
-            releaseStatusCopy.innerHTML = `All downloads ready<br><small>${kernels.length} kernel packages verified for this release</small>`;
+            const target = releaseTargets.get(requestedRelease) || kernels.length;
+            const complete = kernels.length >= target;
+            releaseStatus.dataset.state = complete ? "ready" : "uploading";
+            releaseStatusCopy.innerHTML = `${complete ? "All downloads ready" : "Builds in progress"}<br><small>${kernels.length}/${target} kernel packages verified for this release</small>`;
+            count.textContent = `${kernels.length}/${target} kernels verified · ${managers.length} managers`;
             releaseSummary.textContent = `${rootLabels[kernels[0].root]} ${kernels[0].ksu} + SUSFS ${kernels[0].susfs} packages from ${publishedReleases[0].name}. Select the package matching your exact model, OxygenOS generation, and kernel version.`;
             const roots = new Set(kernels.map(item => item.root));
             document.querySelectorAll("[data-root]").forEach(button => {
               button.hidden = button.dataset.root !== "all" && !roots.has(button.dataset.root);
             });
           } else {
-            releaseStatusCopy.innerHTML = `All downloads ready<br><small>${kernels.length} kernel packages verified across the catalog</small>`;
+            const target = [...releaseTargets.values()].reduce((sum, value) => sum + value, 0);
+            const complete = kernels.length >= target;
+            releaseStatus.dataset.state = complete ? "ready" : "uploading";
+            releaseStatusCopy.innerHTML = `${complete ? "All downloads ready" : "Builds in progress"}<br><small>${kernels.length}/${target} kernel packages verified across the catalog</small>`;
+            count.textContent = `${kernels.length}/${target} kernels verified · ${managers.length} managers from ${releaseCount} published releases`;
           }
           render();
         })
