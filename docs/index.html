@@ -270,7 +270,18 @@
       let rootFilter = "all";
       let requestedDownload = null;
       const rootLabels = { KSU: "KernelSU", KSUN: "KernelSU Next", ReSukiSU: "ReSukiSU" };
+      const currentReleaseTags = new Set([
+        "nostalgic-resukisu35055-susfs220-nomount111-20260809",
+        "nostalgic-ksun33214-susfs220-nomount-v220-r1",
+        "nostalgic-ksu32525-susfs220-nomount-v220-r2",
+        "nostalgic-ksun33301-susfs230-inline200-93"
+      ]);
       const companionAssets = [
+        {
+          match: /^NoMount-v2\.0\.0-release\.zip$/i,
+          title: "NoMount 2.0.0 module",
+          description: "Current NoMount companion module published with the KernelSU Next 33301 release."
+        },
         {
           match: /^NoMount-v1\.1\.1-dev-1dacddf-KSU\.zip$/i,
           title: "NoMount module for KernelSU",
@@ -295,6 +306,21 @@
           match: /^ReSukiSU_v4\.1\.0-spoofed_35055-arm64-v8a-release\.apk$/i,
           title: "ReSukiSU spoofed manager",
           description: "Spoofed ReSukiSU manager APK for build 35055."
+        },
+        {
+          match: /^KernelSU_v3\.2\.5_32525-release\.apk$/i,
+          title: "KernelSU manager",
+          description: "KernelSU manager APK for build 32525."
+        },
+        {
+          match: /^KernelSU_Next_v3\.3\.0_33214-release\.apk$/i,
+          title: "KernelSU Next manager",
+          description: "Normal KernelSU Next manager APK for build 33214."
+        },
+        {
+          match: /^KernelSU_Next_v3\.3\.0-spoofed_33214-release\.apk$/i,
+          title: "KernelSU Next spoofed manager",
+          description: "Spoofed KernelSU Next manager APK for build 33214."
         }
       ];
 
@@ -309,6 +335,7 @@
       }
       function parseManagerAsset(asset) {
         if (/^KernelSU_Next_.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KSUN" };
+        if (/^KernelSU_v.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KSU" };
         return /^ReSukiSU_.*\.apk$/i.test(asset.name) && { ...asset, type: "manager", root: "ReSukiSU" };
       }
       function parseCatalogAsset(asset) {
@@ -387,7 +414,9 @@
       fetch(`https://api.github.com/repos/${repository}/releases?per_page=100`)
         .then(response => response.ok ? response.json() : Promise.reject(new Error("Release API unavailable")))
         .then(releases => {
-          const allPublishedReleases = releases.filter(item => !item.draft && !item.prerelease);
+          const allPublishedReleases = releases.filter(item =>
+            !item.draft && !item.prerelease && currentReleaseTags.has(item.tag_name)
+          );
           const publishedReleases = requestedRelease
             ? allPublishedReleases.filter(item => item.tag_name === requestedRelease)
             : allPublishedReleases;

@@ -8,8 +8,8 @@ It contains no private build workflows, device-source checkouts, credentials, or
 - KernelSU Next 33214 / SuSFS 2.2.0 / NoMount 1.1.1 kernel packages migrated from the original v2.2.0-r1 release
 - KernelSU 32525 / SuSFS 2.2.0 / NoMount 1.1.1 kernel packages migrated from the original v2.2.0-r2 release
 - ReSukiSU 35055 / SuSFS 2.2.0 kernel packages migrated from the original 2026-08-09 release
-- NoMount companion packages for both release families
-- KernelSU Next and ReSukiSU normal and spoofed manager APKs
+- NoMount 1.1.1 companion packages and the current NoMount 2.0.0 module
+- KernelSU, KernelSU Next, and ReSukiSU manager APKs, including the available spoofed variants
 
 ## Download site
 
@@ -23,4 +23,4 @@ Only release assets whose names match the published NOSTALGIC naming convention 
 
 Use only the package matching your exact OnePlus device, OxygenOS generation, and kernel version. Keep a known-working boot image available before flashing.
 
-The prepared catalog includes 51 KernelSU Next kernel 6.1 targets, 15 KernelSU Next kernel 6.12/6.6 targets, 156 KernelSU Next 33214 packages, 156 KernelSU 32525 packages, and 122 checksum-verified ReSukiSU packages across OxygenOS 14, 15, and 16. The user reported boot testing of the OP13R pilot stack; other devices are not represented as boot-tested.
+The live catalog includes the four final release families: 93 KernelSU Next 33301 packages, 156 KernelSU Next 33214 packages, 156 KernelSU 32525 packages, and 122 checksum-verified ReSukiSU packages across OxygenOS 14, 15, and 16. Superseded 33301 staging batches are intentionally excluded from the catalog.
