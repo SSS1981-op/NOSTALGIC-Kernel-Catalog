@@ -379,6 +379,20 @@
       function parseCatalogAsset(asset) {
         return parseKernelAsset(asset) || parseManagerAsset(asset);
       }
+      async function fetchAllReleaseAssets(release) {
+        const assets = [];
+        for (let page = 1; ; page += 1) {
+          const response = await fetch(
+            `https://api.github.com/repos/${repository}/releases/${release.id}/assets?per_page=100&page=${page}`,
+            { cache: "no-store" }
+          );
+          if (!response.ok) throw new Error("Release assets are unavailable");
+          const batch = await response.json();
+          assets.push(...batch);
+          if (batch.length < 100) break;
+        }
+        return { ...release, assets };
+      }
       function render() {
         const kernels = catalogAssets.filter(item =>
           item.type === "kernel" &&
@@ -455,14 +469,15 @@
           headers: { Accept: "application/vnd.github+json" }
         }).then(response => response.ok ? response.json() : Promise.reject(new Error(`Release API unavailable for ${tag}`)))
       ))
-        .then(releases => {
+        .then(async releases => {
           const allPublishedReleases = releases.filter(item =>
             !item.draft && !item.prerelease && currentReleaseTags.has(item.tag_name)
           );
-          const publishedReleases = requestedRelease
+          const selectedReleases = requestedRelease
             ? allPublishedReleases.filter(item => item.tag_name === requestedRelease)
             : allPublishedReleases;
-          if (requestedRelease && publishedReleases.length !== 1) throw new Error("Requested release is unavailable");
+          if (requestedRelease && selectedReleases.length !== 1) throw new Error("Requested release is unavailable");
+          const publishedReleases = await Promise.all(selectedReleases.map(fetchAllReleaseAssets));
           catalogAssets = publishedReleases.flatMap(release =>
             release.assets.map((asset, order) => {
               const parsed = parseCatalogAsset(asset);
