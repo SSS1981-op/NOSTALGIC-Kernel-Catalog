@@ -449,8 +449,12 @@
         document.querySelectorAll("[data-root]").forEach(item => item.setAttribute("aria-pressed", item === button));
         render();
       }));
-      fetch(`https://api.github.com/repos/${repository}/releases?per_page=100`)
-        .then(response => response.ok ? response.json() : Promise.reject(new Error("Release API unavailable")))
+      Promise.all([...currentReleaseTags].map(tag =>
+        fetch(`https://api.github.com/repos/${repository}/releases/tags/${encodeURIComponent(tag)}?catalog=${Date.now()}`, {
+          cache: "no-store",
+          headers: { Accept: "application/vnd.github+json" }
+        }).then(response => response.ok ? response.json() : Promise.reject(new Error(`Release API unavailable for ${tag}`)))
+      ))
         .then(releases => {
           const allPublishedReleases = releases.filter(item =>
             !item.draft && !item.prerelease && currentReleaseTags.has(item.tag_name)
