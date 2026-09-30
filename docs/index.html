@@ -112,6 +112,11 @@
       .tool-card { display: grid; gap: .45rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: transform .18s ease, border-color .18s ease; }
       .tool-card:hover, .tool-card:focus-visible { transform: translateY(-3px); border-color: var(--blue); outline: none; }
       .tool-card small { color: var(--muted); line-height: 1.45; }
+      .featured-manager-card { min-height: 13rem; }
+      .featured-manager-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem 1rem; margin-top: .6rem; }
+      .featured-manager-links { display: grid; gap: .35rem; margin-top: .35rem; }
+      .featured-manager-links a { width: fit-content; color: var(--blue); font-weight: 750; text-decoration: none; }
+      .featured-manager-links a:hover, .featured-manager-links a:focus-visible { text-decoration: underline; outline: none; }
       .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 3.5rem 0 1rem; }
       h2 { margin: 0; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.04em; }
       .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -233,6 +238,24 @@
         <span id="release-status-copy">All downloads ready<br><small>Verified packages are loading</small></span>
       </div>
 
+      <section class="tools" aria-labelledby="nostalgic-susfs-manager-title">
+        <div class="eyebrow">Recommended SUSFS companion</div>
+        <h2 id="nostalgic-susfs-manager-title">NOSTALGIC SuSFS Manager</h2>
+        <div class="tool-grid">
+          <div class="tool-card highlighted-download featured-manager-card">
+            <b>NOSTALGIC SuSFS Manager v0.0.1</b>
+            <small>Capability-driven SUSFS controls with a balanced default profile.</small>
+            <div class="featured-manager-actions">
+              <a class="download" href="./downloads/NOSTALGIC-SUSFS-Manager-v0.0.1.zip" data-download>Download module &rarr;</a>
+            </div>
+            <div class="featured-manager-links">
+              <a href="https://t.me/+058-LDgk0-U4YzE1" target="_blank" rel="noopener noreferrer">NOSTALGIC Modules channel &rarr;</a>
+              <a href="https://t.me/+KYEPIXkTf1ZjY2M1" target="_blank" rel="noopener noreferrer">Discussion: NOSTALGIC' Chat &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div id="oneplus-content">
         <section class="tools" aria-labelledby="tools-title">
           <div class="eyebrow">Companion downloads</div>
@@ -252,6 +275,7 @@
             <div class="filters" aria-label="Filter root implementation">
               <button type="button" data-root="all" aria-pressed="true">All roots</button>
               <button type="button" data-root="KSUN" aria-pressed="false">KernelSU Next</button>
+              <button type="button" data-root="KowSU" aria-pressed="false">KowSU</button>
               <button type="button" data-root="ReSukiSU" aria-pressed="false">ReSukiSU</button>
             </div>
           </div>
@@ -291,20 +315,27 @@
       let filter = "all";
       let rootFilter = "all";
       let requestedDownload = null;
-      const rootLabels = { KSU: "KernelSU", KSUN: "KernelSU Next", ReSukiSU: "ReSukiSU" };
+      const rootLabels = { KSU: "KernelSU", KSUN: "KernelSU Next", KowSU: "KowSU", ReSukiSU: "ReSukiSU" };
       const currentReleaseTags = new Set([
         "nostalgic-resukisu35055-susfs220-nomount111-20260809",
         "nostalgic-ksun33214-susfs220-nomount-v220-r1",
         "nostalgic-ksu32525-susfs220-nomount-v220-r2",
-        "nostalgic-ksun33301-susfs230-inline200-93"
+        "nostalgic-ksun33301-susfs230-inline200-93",
+        "nostalgic-kowsu32686-susfs230-inline200-114"
       ]);
       const releaseTargets = new Map([
         ["nostalgic-resukisu35055-susfs220-nomount111-20260809", 122],
         ["nostalgic-ksun33214-susfs220-nomount-v220-r1", 156],
         ["nostalgic-ksu32525-susfs220-nomount-v220-r2", 156],
-        ["nostalgic-ksun33301-susfs230-inline200-93", 156]
+        ["nostalgic-ksun33301-susfs230-inline200-93", 156],
+        ["nostalgic-kowsu32686-susfs230-inline200-114", 156]
       ]);
       const companionAssets = [
+        {
+          match: /^KowSU_v3\.3\.0-85-g9e426f28_32686-release\.apk$/i,
+          title: "KowSU 32686 manager",
+          description: "Official KowSU manager APK for kernel build 32686."
+        },
         {
           match: /^NoMount-v2\.0\.0-release\.zip$/i,
           title: "NoMount 2.0.0 module",
@@ -363,7 +394,9 @@
       ];
 
       function parseKernelAsset(asset) {
-        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
+        const kowsu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KowSU_(32686)_SuSFS_(v2\.3\.0)\.zip$/);
+        if (kowsu) return { ...asset, type: "kernel", model: kowsu[1], oos: kowsu[2], kernel: kowsu[3], root: "KowSU", ksu: kowsu[4], susfs: kowsu[5] };
+        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
           || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/)
           || asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSU_(32525)_SuSFS_(v2\.2\.0)\.zip$/)
           || asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33214)_SuSFS_(v2\.2\.0)\.zip$/);
@@ -372,26 +405,13 @@
         return resukisu && { ...asset, type: "kernel", model: resukisu[1], oos: resukisu[2], kernel: resukisu[3], root: "ReSukiSU", ksu: resukisu[4], susfs: resukisu[5] };
       }
       function parseManagerAsset(asset) {
+        if (/^KowSU_.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KowSU" };
         if (/^KernelSU_Next_.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KSUN" };
         if (/^KernelSU_v.*\.apk$/i.test(asset.name)) return { ...asset, type: "manager", root: "KSU" };
         return /^ReSukiSU_.*\.apk$/i.test(asset.name) && { ...asset, type: "manager", root: "ReSukiSU" };
       }
       function parseCatalogAsset(asset) {
         return parseKernelAsset(asset) || parseManagerAsset(asset);
-      }
-      async function fetchAllReleaseAssets(release) {
-        const assets = [];
-        for (let page = 1; ; page += 1) {
-          const response = await fetch(
-            `https://api.github.com/repos/${repository}/releases/${release.id}/assets?per_page=100&page=${page}`,
-            { cache: "no-store" }
-          );
-          if (!response.ok) throw new Error("Release assets are unavailable");
-          const batch = await response.json();
-          assets.push(...batch);
-          if (batch.length < 100) break;
-        }
-        return { ...release, assets };
       }
       function render() {
         const kernels = catalogAssets.filter(item =>
@@ -469,15 +489,14 @@
           headers: { Accept: "application/vnd.github+json" }
         }).then(response => response.ok ? response.json() : Promise.reject(new Error(`Release API unavailable for ${tag}`)))
       ))
-        .then(async releases => {
+        .then(releases => {
           const allPublishedReleases = releases.filter(item =>
             !item.draft && !item.prerelease && currentReleaseTags.has(item.tag_name)
           );
-          const selectedReleases = requestedRelease
+          const publishedReleases = requestedRelease
             ? allPublishedReleases.filter(item => item.tag_name === requestedRelease)
             : allPublishedReleases;
-          if (requestedRelease && selectedReleases.length !== 1) throw new Error("Requested release is unavailable");
-          const publishedReleases = await Promise.all(selectedReleases.map(fetchAllReleaseAssets));
+          if (requestedRelease && publishedReleases.length !== 1) throw new Error("Requested release is unavailable");
           catalogAssets = publishedReleases.flatMap(release =>
             release.assets.map((asset, order) => {
               const parsed = parseCatalogAsset(asset);
