@@ -331,7 +331,7 @@
         ["nostalgic-ksu32525-susfs220-nomount-v220-r2", 156],
         ["nostalgic-ksun33301-susfs230-inline200-93", 156],
         ["nostalgic-kowsu32686-susfs230-inline200-114", 156],
-        ["nostalgic-sukisu40940-susfs230-inline200-159", 159]
+        ["nostalgic-sukisu40940-susfs230-inline200-159", 158]
       ]);
       const companionAssets = [
         {
@@ -402,7 +402,7 @@
       ];
 
       function parseKernelAsset(asset) {
-        const sukisu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|14-6\.1)\.[\d]+)_SukiSU-Ultra_(40940)_SuSFS_(v2\.3\.0)_NoMount-INLINE-v2\.0\.0\.zip$/);
+        const sukisu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_SukiSU-Ultra_(40940)_SuSFS_(v2\.3\.0)_NoMount-INLINE-v2\.0\.0\.zip$/);
         if (sukisu) return { ...asset, type: "kernel", model: sukisu[1], oos: sukisu[2], kernel: sukisu[3], root: "SukiSU", ksu: sukisu[4], susfs: sukisu[5] };
         const kowsu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KowSU_(32686)_SuSFS_(v2\.3\.0)\.zip$/);
         if (kowsu) return { ...asset, type: "kernel", model: kowsu[1], oos: kowsu[2], kernel: kowsu[3], root: "KowSU", ksu: kowsu[4], susfs: kowsu[5] };
