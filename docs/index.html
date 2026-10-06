@@ -533,7 +533,8 @@
           const allReleaseAssets = allPublishedReleases.flatMap(release => release.assets.map(asset => ({ ...asset, release })));
           const availableCompanions = companionAssets.map(tool => ({
             tool,
-            asset: (tool.shared ? allReleaseAssets : releaseAssets).find(item => tool.match.test(item.name))
+            asset: releaseAssets.find(item => tool.match.test(item.name))
+              || (tool.shared ? allReleaseAssets.find(item => tool.match.test(item.name)) : undefined)
           })).filter(item => item.asset);
           tools.replaceChildren(...availableCompanions.map(({ tool, asset }) => {
             const card = document.createElement("a");
