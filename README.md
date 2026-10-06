@@ -6,9 +6,10 @@ It contains no private build workflows, device-source checkouts, credentials, or
 
 - KernelSU Next 33301 / SuSFS 2.3.0 / NoMount Inline 2.0.0 kernel packages
 - SukiSU Ultra 40940 / SuSFS 2.3.0 / NoMount Inline 2.0.0 kernel packages (158 of 158 verified)
+- BakaSU (ReSukiSU) 35212 / SuSFS 2.3.0 kernel packages (77 of 77 verified)
 - ReSukiSU 35055 / SuSFS 2.2.0 kernel packages migrated from the original 2026-08-09 release
 - NoMount companion packages for both release families
-- KernelSU Next and ReSukiSU normal and spoofed manager APKs
+- KernelSU Next, ReSukiSU, and BakaSU normal and spoofed manager APKs
 
 ## Download site
 
@@ -22,4 +23,4 @@ Only release assets whose names match the published NOSTALGIC naming convention 
 
 Use only the package matching your exact OnePlus device, OxygenOS generation, and kernel version. Keep a known-working boot image available before flashing.
 
-The published catalog includes 51 KernelSU Next kernel 6.1 targets, 15 KernelSU Next kernel 6.12/6.6 targets, and 122 checksum-verified ReSukiSU packages across OxygenOS 14, 15, and 16. The user reported boot testing of the OP13R pilot stack; other devices are not represented as boot-tested.
+The published catalog includes 77 checksum-verified BakaSU (ReSukiSU) 35212 packages across kernel 5.15 and 6.1, alongside the existing KernelSU, KernelSU Next, KowSU, SukiSU Ultra, and ReSukiSU release families. The BakaSU OP13R pilot stack was device-tested successfully; other devices are build-verified rather than represented as boot-tested.
