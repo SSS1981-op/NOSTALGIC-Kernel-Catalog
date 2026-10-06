@@ -360,7 +360,8 @@
         {
           match: /^NoMount-v2\.0\.0-release\.zip$/i,
           title: "NoMount 2.0.0 module",
-          description: "Current NoMount companion module published with the KernelSU Next 33301 release."
+          description: "Current NoMount companion module published with the KernelSU Next 33301 release.",
+          shared: true
         },
         {
           match: /^NoMount-v1\.1\.1-dev-1dacddf-KSU\.zip$/i,
@@ -529,9 +530,10 @@
           if (!catalogAssets.some(asset => asset.type === "kernel")) throw new Error("Packages are still being published");
           const tools = document.querySelector("#tools");
           const releaseAssets = publishedReleases.flatMap(release => release.assets.map(asset => ({ ...asset, release })));
+          const allReleaseAssets = allPublishedReleases.flatMap(release => release.assets.map(asset => ({ ...asset, release })));
           const availableCompanions = companionAssets.map(tool => ({
             tool,
-            asset: releaseAssets.find(item => tool.match.test(item.name))
+            asset: (tool.shared ? allReleaseAssets : releaseAssets).find(item => tool.match.test(item.name))
           })).filter(item => item.asset);
           tools.replaceChildren(...availableCompanions.map(({ tool, asset }) => {
             const card = document.createElement("a");
