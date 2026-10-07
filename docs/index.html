@@ -511,7 +511,7 @@
         document.querySelectorAll("[data-root]").forEach(item => item.setAttribute("aria-pressed", item === button));
         render();
       }));
-      fetch("./releases.json?v=20261006-1", { cache: "no-store" })
+      fetch("./releases.json?v=20261007-bakasu158", { cache: "no-store" })
         .then(response => response.ok ? response.json() : Promise.reject(new Error("Release catalog unavailable")))
         .then(releases => {
           const allPublishedReleases = releases.filter(item =>
