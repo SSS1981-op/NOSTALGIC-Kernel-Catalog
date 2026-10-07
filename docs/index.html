@@ -416,7 +416,7 @@
       ];
 
       function parseKernelAsset(asset) {
-        const bakasu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:13-5\.15|14-6\.1)\.[\d]+)_BakaSU_(35212)_SuSFS_(v2\.3\.0)\.zip$/);
+        const bakasu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_BakaSU_(35212)_SuSFS_(v2\.3\.0)\.zip$/);
         if (bakasu) return { ...asset, type: "kernel", model: bakasu[1], oos: bakasu[2], kernel: bakasu[3], root: "BakaSU", ksu: bakasu[4], susfs: bakasu[5] };
         const sukisu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_SukiSU-Ultra_(40940)_SuSFS_(v2\.3\.0)_NoMount-INLINE-v2\.0\.0\.zip$/);
         if (sukisu) return { ...asset, type: "kernel", model: sukisu[1], oos: sukisu[2], kernel: sukisu[3], root: "SukiSU", ksu: sukisu[4], susfs: sukisu[5] };
