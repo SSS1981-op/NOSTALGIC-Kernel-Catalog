@@ -7,9 +7,10 @@ It contains no private build workflows, device-source checkouts, credentials, or
 - KernelSU Next 33301 / SuSFS 2.3.0 / NoMount Inline 2.0.0 kernel packages
 - SukiSU Ultra 40940 / SuSFS 2.3.0 / NoMount Inline 2.0.0 kernel packages (158 of 158 verified)
 - BakaSU (ReSukiSU) 35212 / SuSFS 2.3.0 kernel packages (77 of 158 verified)
+- AgnesSU 35214 / SuSFS 2.3.0 kernel packages (159 of 159 verified)
 - ReSukiSU 35055 / SuSFS 2.2.0 kernel packages migrated from the original 2026-08-09 release
 - NoMount companion packages for both release families
-- KernelSU Next, ReSukiSU, and BakaSU normal and spoofed manager APKs
+- KernelSU Next, ReSukiSU, BakaSU, and AgnesSU manager packages
 
 ## Download site
 
