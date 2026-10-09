@@ -327,7 +327,8 @@
         "nostalgic-kowsu32686-susfs230-inline200-114",
         "nostalgic-sukisu40940-susfs230-inline200-159",
         "nostalgic-bakasu35212-susfs230-77",
-        "nostalgic-agnessu35214-susfs230-159"
+        "nostalgic-agnessu35214-susfs230-159",
+        "nostalgic-ksun33326-susfs230-160"
       ]);
       const releaseTargets = new Map([
         ["nostalgic-resukisu35055-susfs220-nomount111-20260809", 122],
@@ -337,9 +338,20 @@
         ["nostalgic-kowsu32686-susfs230-inline200-114", 156],
         ["nostalgic-sukisu40940-susfs230-inline200-159", 158],
         ["nostalgic-bakasu35212-susfs230-77", 158],
-        ["nostalgic-agnessu35214-susfs230-159", 159]
+        ["nostalgic-agnessu35214-susfs230-159", 159],
+        ["nostalgic-ksun33326-susfs230-160", 160]
       ]);
       const companionAssets = [
+        {
+          match: /^KernelSU_Next_v3\.4\.0-32-g763a08d2_33326-release\.apk$/i,
+          title: "KernelSU Next 33326 manager",
+          description: "Normal universal KernelSU Next manager APK for build 33326."
+        },
+        {
+          match: /^KernelSU_Next_v3\.4\.0-32-g763a08d2-spoofed_33326-release\.apk$/i,
+          title: "KernelSU Next 33326 spoofed manager",
+          description: "Spoofed universal KernelSU Next manager APK for build 33326."
+        },
         {
           match: /^AgnesSU_v4\.2\.0_1_35214-universal-release\.apk$/i,
           title: "AgnesSU 35214 manager",
@@ -348,7 +360,7 @@
         {
           match: /^NoMount-v2\.1\.0-release-500\.zip$/i,
           title: "NoMount 2.1.0 module",
-          description: "NoMount v2.1.0 release 500 companion module for AgnesSU 35214."
+          description: "NoMount v2.1.0 release 500 companion module."
         },
         {
           match: /^BakaSU_v4\.2\.0-rc3_35212-universal-release\.apk$/i,
@@ -437,7 +449,7 @@
         if (sukisu) return { ...asset, type: "kernel", model: sukisu[1], oos: sukisu[2], kernel: sukisu[3], root: "SukiSU", ksu: sukisu[4], susfs: sukisu[5] };
         const kowsu = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KowSU_(32686)_SuSFS_(v2\.3\.0)\.zip$/);
         if (kowsu) return { ...asset, type: "kernel", model: kowsu[1], oos: kowsu[2], kernel: kowsu[3], root: "KowSU", ksu: kowsu[4], susfs: kowsu[5] };
-        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301)_SuSFS_(v2\.3\.0)\.zip$/)
+        const match = asset.name.match(/^NOSTALGIC-AK3_(.+)_(OOS(?:14|15|16))_(android(?:12-5\.10|13-5\.15|14-6\.1|15-6\.6|16-6\.12)\.[\d]+)_KSUN_(33301|33326)_SuSFS_(v2\.3\.0)\.zip$/)
           || asset.name.match(/^NOSTALGIC_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33276)_SuSFS_(v2\.2)_NoMount\.zip$/)
           || asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSU_(32525)_SuSFS_(v2\.2\.0)\.zip$/)
           || asset.name.match(/^AK3_(.+)_(OOS(?:14|15|16))_(android\d+-[\d.]+)_KSUN_(33214)_SuSFS_(v2\.2\.0)\.zip$/);
@@ -527,7 +539,7 @@
         document.querySelectorAll("[data-root]").forEach(item => item.setAttribute("aria-pressed", item === button));
         render();
       }));
-      fetch("./releases.json?v=20261008-agnessu159", { cache: "no-store" })
+      fetch("./releases.json?v=20261010-ksun33326", { cache: "no-store" })
         .then(response => response.ok ? response.json() : Promise.reject(new Error("Release catalog unavailable")))
         .then(releases => {
           const allPublishedReleases = releases.filter(item =>
